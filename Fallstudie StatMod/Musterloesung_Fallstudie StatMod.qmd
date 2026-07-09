@@ -156,7 +156,7 @@ skew(student$G3)
 ```
 
 Die Verteilung von `G3` ist nicht perfekt symmetrisch, sondern moderat linksschief mit einer Schiefe von -0.909.
-Der Modus liegt mit etwas über 100 Beobachtungen bei 11 und deutlich mehr als die Hälfte der Beobachtungen haben eine Note von 10 oder höher. Das theoretische Maximum von 20 Punkten wurde von keiner Schülerin und von keinem Schüler erreicht.
+Der häufigste beobachtete Wert (Modus) ist 11 und deutlich mehr als die Hälfte der Beobachtungen haben eine Note von 10 oder höher. Das theoretische Maximum von 20 Punkten wurde von keiner Schülerin und von keinem Schüler erreicht.
 
 ### 3.3 Zusammenhang zwischen `freetime` und `G3`
 
@@ -173,6 +173,8 @@ cor(G3 ~ freetime, data = student)
 
 Zwischen Abschlussnote und freier Zeit besteht ein negativer, aber nur schwacher linearer Zusammenhang.
 Die Pearson-Korrelation beträgt -0.123; weniger Freizeit geht also tendenziell mit besseren Abschlussnoten einher. Im Streudiagramm lässt sich dieser Trend nur schwer erkennen. Die Noten streuen innerhalb jeder Freizeitstufe deutlich.
+
+Ergänzender Hinweis: 'freetime' ist ordinal und wird im Folgenden näherungsweise als metrisch behandelt.
 
 ## 4. Inferenzstatistik
 
@@ -237,11 +239,13 @@ coef(modinternet)
 ```
 
 Schülerinnen und Schüler mit Internetzugang erreichen im Mittel 12.17 Punkte, ohne Internetzugang 11.03 Punkte.
-Der Intercept beschreibt den Mittelwert der Referenzgruppe `internet = no` und beträgt 11.03 Punkte.Der Koeffizient für `internetyes` beträgt 1.146 Punkte und beschreibt damit einen positiven Mittelwertunterschied zugunsten der Gruppe mit Internetzugang. Der Unterschied ist mit einem p-Wert von p \< 0.001 statistisch auffällig, sodass die Daten hier auf einen systematischen Mittelwertunterschied hindeuten.
+Der Intercept beschreibt den Mittelwert der Referenzgruppe `internet = no` und beträgt 11.03 Punkte. Der Koeffizient für `internetyes` beträgt 1.146 Punkte und beschreibt damit einen positiven Mittelwertunterschied zugunsten der Gruppe mit Internetzugang. Der Unterschied ist mit einem p-Wert von p \< 0.001 statistisch auffällig, sodass die Daten hier auf einen systematischen Mittelwertunterschied hindeuten.
+
+Ergänzender Hinweis: Die Regression mit einer binären Dummyvariable ist mathematisch identisch mit einem Zweistichprobenvergleich.
 
 ### 4.4 Permutationsverteilung für `internet`
 
-Formulieren Sie für den Koeffizienten von internet im linearen Regressionsmodell G3 ~ internet die Nullhypothese und die Alternativhypothese. Erzeugen Sie anschließend eine Permutationsverteilung für diesen Koeffizienten, bestimmen Sie den p-Wert und treffen Sie eine Entscheidung auf dem 5%-Niveau. Gehen Sie davon aus, dass unter der Nullhypothese kein Zusammenhang besteht und die Gruppenzugehörigkeit zufällig ist. Mischen Sie daher die Variable internet mehrfach neu, während die Noten gleich bleiben, und berechnen Sie jeweils den Koeffizienten des linearen Modells. Visualisieren Sie die resultierende Permutationsverteilung in einem Histogramm und markieren Sie den beobachteten Koeffizienten, um seine Lage im Vergleich zur Nullverteilung zu beurteilen.
+Formulieren Sie für den Koeffizienten von internet im linearen Regressionsmodell G3 ~ internet die Nullhypothese und die Alternativhypothese. Erzeugen Sie anschließend eine Permutationsverteilung für diesen Koeffizienten, bestimmen Sie den p-Wert und treffen Sie eine Entscheidung auf dem 5%-Niveau. Gehen Sie davon aus, dass unter der Nullhypothese kein Unterschied der Gruppenmittelwerte besteht und die Gruppenzugehörigkeit zufällig ist. Mischen Sie daher die Variable internet mehrfach neu, während die Noten gleich bleiben, und berechnen Sie jeweils den Koeffizienten des linearen Modells. Visualisieren Sie die resultierende Permutationsverteilung in einem Histogramm und markieren Sie den beobachteten Koeffizienten, um seine Lage im Vergleich zur Nullverteilung zu beurteilen.
 
 ```{r}
 set.seed(12345)
@@ -421,7 +425,7 @@ gf_line(dppi ~ ppi) |>
   gf_vline(xintercept = kred95, color = "green")
 ```
 
-Unter Einbezug der Daten ergibt sich die Posteriori-Verteilung Beta(557, 102). Der Posterior-Modus beträgt 0.846 und das 95-Prozent-Kredibilitätsintervall reicht von 0.817 bis 0.872. Bayesianisch betrachtet liegt der Erfolgsanteil damit sehr wahrscheinlich im Bereich von rund 81,67 bis 87,18 Prozent und klar oberhalb einer bloßen Zufallserwartung von 50 Prozent.
+Unter Einbezug der Daten ergibt sich die Posteriori-Verteilung Beta(557, 102). Der Posterior-Modus beträgt 0.846 und das 95-Prozent-Kredibilitätsintervall reicht von 0.817 bis 0.872. Bayesianisch betrachtet liegt der Erfolgsanteil damit sehr wahrscheinlich im Bereich von rund 81,67 bis 87,18 Prozent und bestätigt einen hohen Erfolgsanteil in der Population.
 
 ### 5.5 Priorvergleich durchführen
 
@@ -471,7 +475,7 @@ rsquared(mod1)
 predict(mod1, newdata = data.frame(studytime = 3))
 ```
 
-Im einfachen linearen Regressionsmodell beträgt die Konstante 10.028 und der Koeffizient von `studytime` 0.973. Eine zusätzliche Lernzeitstufe geht damit im Mittel mit rund 0.973 Punkten höherer Abschlussnote einher. Das Bestimmtheitsmaß liegt bei 0.061, sodass `studytime` allein mit 6,2 Prozent der Varianz nur einen kleinen Teil der Notenunterschiede erklärt.
+Im einfachen linearen Regressionsmodell beträgt die Konstante 10.028 und der Koeffizient von `studytime` 0.973. Eine zusätzliche Lernzeitstufe geht damit im Mittel mit rund 0.973 Punkten höherer Abschlussnote einher. Das Bestimmtheitsmaß liegt bei 0.061, sodass `studytime` allein mit 6,2 Prozent der Varianz nur einen kleinen Teil der Notenunterschiede erklärt. Der größte Teil der Leistungsunterschiede wird also durch andere Einflussgrößen erklärt.
 Für `studytime = 3` ergibt sich eine Punktprognose von 12,946 Punkten.
 
 ### 6.2 Multiple lineare Regression
@@ -492,7 +496,7 @@ coef(mod2)
 rsquared(mod2)
 ```
 
-Im multiplen Modell steigt das Bestimmtheitsmaß auf 0.205 und liegt damit deutlich über dem einfachen Modell mit über einem Fünftel erlärter Varianz. `studytime` wirkt weiterhin positiv (0.740), `absences` negativ (-0.023) und `failures` klar negativ (-1.909).
+Im multiplen Modell steigt das Bestimmtheitsmaß auf 0.205 und liegt damit deutlich über dem einfachen Modell mit über einem Fünftel erklärter Varianz. `studytime` wirkt weiterhin positiv (0.740), `absences` negativ (-0.023) und `failures` klar negativ (-1.909).
 Der Koeffizient für `internetyes` beträgt 0.854 und ist inhaltlich kleiner als im bivariaten Modell; der stärkste negative Prädiktor im Modell sind die bisherigen Misserfolge `failures`.
 
 ### 6.3 Interaktionsmodell
@@ -522,7 +526,7 @@ Die zentralen Leistungsunterschiede werden weiterhin vor allem durch Fehlzeiten 
 
 ### 7.1 Naives Modell für `paid`
 
-Schätzen Sie ein bivariates Modell für den Zusammenhang zwischen `paid` also bezahlter Nachhilfe und der Abschlussnote `G3`. Erstellen Sie zuvor ein DAG, dass diesen Zusammenhang modelliert. Das zugehörige DAG kann auf der Website [DAGitty.net](https://www.dagitty.net/dags.html) grafisch erstellt und dargestellt werden.
+Schätzen Sie ein bivariates Modell für den Zusammenhang zwischen `paid` also bezahlter Nachhilfe und der Abschlussnote `G3`. Erstellen Sie zuvor ein DAG, das diesen Zusammenhang modelliert. Das zugehörige DAG kann auf der Website [DAGitty.net](https://www.dagitty.net/dags.html) grafisch erstellt und dargestellt werden.
 
 ```{r}
 # Referenzkategorie festlegen
@@ -537,7 +541,7 @@ summary(modpaid1)
 # Koeffizienten ausgeben
 coef(modpaid1)
 
-#Code zum Einfügen auf Daggity.net für naives DAG ("#" vorab entfernen):
+#Code zum Einfügen auf DAGity.net für naives DAG ("#" vorab entfernen):
 
 #dag {
 #bb="-5.124,-9.299,4.964,10.134"
@@ -652,7 +656,7 @@ confusionMatrix(test.pred, test.obs)
 ```
 
 Auf den Testdaten erreicht das Modell eine Accuracy von 86,82 Prozent.
-Dieser Wert liegt allerdings nur wenig über der No Information Rate von 84,50 Prozent, und der Unterschied ist mit einem p-Wert von 0,278 statistisch nicht signifikant.
+Dieser Wert liegt allerdings nur wenig über der No Information Rate von 84,50 Prozent, und der Unterschied ist mit einem p-Wert von 0,278 statistisch nicht signifikant. Allerdings ist zu berücksichtigen, dass die Klassen stark unausgewogen sind, weshalb die Accuracy allein nur eingeschränkt aussagekräftig ist.
 Da no als positive Klasse definiert ist, beträgt die Sensitivity für `Pass = no` 30,00 Prozent, während die Specificity gegenüber `Pass = yes` bei 97,25 Prozent liegt.
 Das Modell erkennt bestandene Fälle also weiterhin sehr zuverlässig, nicht bestandene Fälle hingegen deutlich schlechter: Von den 20 Personen, die tatsächlich nicht bestanden haben, werden nur 6 korrekt identifiziert, während 14 fälschlich der Klasse `yes` zugeordnet werden.
 Die Konfusionsmatrix zeigt damit eine klare Schieflage zugunsten der häufigeren Klasse `yes`, was sich auch an der moderaten Kappa-Statistik von 0.351 sowie der Balanced Accuracy von 63,62 Prozent ablesen lässt.
